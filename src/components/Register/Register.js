@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
-const SignIn = ({ loadUser, onRouteChange }) => {
-    const [userData, setUserData] = useState({ email: '', password: '' });
+const Register = ({ loadUser, onRouteChange }) => {
+    const [userData, setUserData] = useState({ name: '', email: '', password: '' });
+
+    const onNameChange = (evt) => {
+        setUserData({ ...userData, name: evt.target.value });
+    }
 
     const onEmailChange = (evt) => {
         setUserData({ ...userData, email: evt.target.value });
@@ -12,10 +16,11 @@ const SignIn = ({ loadUser, onRouteChange }) => {
     }
 
     const onSubmitButton = () => {
-        fetch("https://brain-server2138.herokuapp.com/signin", {
+        fetch("https://brain-server2138.herokuapp.com/register", {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                name: userData.name,
                 email: userData.email,
                 password: userData.password
             })
@@ -26,15 +31,25 @@ const SignIn = ({ loadUser, onRouteChange }) => {
                     loadUser(user);
                     onRouteChange("home");
                 }
-            });
+            })
     }
-    
+
     return (
         <article className="br3 shadow-5 w-25-l center">
             <main className="pa4 black-80">
                 <div className="measure">
                     <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                        <legend className="f1 fw7 ph0 mh0">Sign In</legend>
+                        <legend className="f1 fw7 ph0 mh0">Register</legend>
+                        <div className="mt3">
+                            <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
+                            <input
+                                className="pa2 input-reset ba br2 bg-transparent hover-bg-navy hover-white w-100"
+                                onChange={onNameChange}
+                                type="text"
+                                name="name"
+                                id="name"
+                            />
+                        </div>
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                             <input
@@ -42,7 +57,8 @@ const SignIn = ({ loadUser, onRouteChange }) => {
                                 onChange={onEmailChange}
                                 type="email"
                                 name="email-address"
-                                id="email-address" />
+                                id="email-address"
+                            />
                         </div>
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
@@ -51,7 +67,8 @@ const SignIn = ({ loadUser, onRouteChange }) => {
                                 onChange={onPasswordChange}
                                 type="password"
                                 name="password"
-                                id="password" />
+                                id="password"
+                            />
                         </div>
                     </fieldset>
                     <div className="">
@@ -59,10 +76,7 @@ const SignIn = ({ loadUser, onRouteChange }) => {
                             onClick={onSubmitButton}
                             className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                             type="submit"
-                            value="Sign in" />
-                    </div>
-                    <div className="lh-copy mt3">
-                        <p onClick={() => onRouteChange("register")} className="f6 fw5 link dim black db pointer">Registry</p>
+                            value="Register" />
                     </div>
                 </div>
             </main>
@@ -70,4 +84,4 @@ const SignIn = ({ loadUser, onRouteChange }) => {
     );
 }
 
-export default SignIn;
+export default Register;
